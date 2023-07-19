@@ -1,0 +1,42 @@
+<%- include('includes/head.ejs') %> <!-- Include the head partial -->
+</head>
+<body>
+    <div class="form">
+        <h1>Full stack Booking Appointment App</h1>
+    <form class="product-form"
+                action="/<%= isEdit ? 'update-user' : 'add-user' %>" method="POST">
+            <div class="form-control">
+                <label for="title">Name:</label>
+                <input type="text" name="name" id="title" value="<%= isEdit ? users.name : '' %>" >
+            </div>
+            <div class="form-control">
+                <label for="number">Number:</label>
+                <input type="number" name="number" id="price" value="<%= isEdit ? users.number : '' %>">
+            </div>            
+            <div class="form-control">
+                <label for="title">Email Id:</label>
+                <input type="email" name="email" id="title" value="<%= isEdit ? users.email : '' %>">
+            </div>      
+            <% if(isEdit){ %> <!-- Use an if statement to check if the edit mode is true -->
+                <input type="hidden" value="<%= users.id %>" name="userId">
+             <% } %> 
+            <button class="button" type="submit"> <%= isEdit ? 'Save Changes' : 'Add User' %> </button> <hr>
+        </form>
+    </div>
+    
+    <div class="container">
+    <% if (users.length > 0) { %> <!-- Use an if statement to check if there are any users -->
+            <% for (let user of users) { %>  <!-- Use a for loop to iterate over the users array -->                 
+                        <%= user.name %>  -  <%= user.number %>  -  <%= user.email %> <!-- Display the user name, number and email -->
+                        <form action="/delete-user" method="POST" > <!-- Create a form for deleting a user -->
+                            <a href="/edit-user/<%= user.id %>?isEditing=true" class="button">Edit</a> <!-- Create a link for editing a user with the user id and edit mode as query parameters -->
+                            <input type="hidden" value="<%= user.id %>" name="userId" /> <!-- Use a hidden input to pass the user id -->
+                            <button type="submit" class="button">Remove</button> <!-- Create a button for removing a user -->
+                        </form>
+            <% } %>
+    <% } else { %> <!-- Use an else statement to handle the case when there are no users -->
+        <h1>No User Found!</h1> <!-- Display a message indicating no users found -->
+    <% } %>
+</div>
+
+<%- include('includes/end.ejs') %> <!-- Include the end partial -->
